@@ -1,0 +1,158 @@
+<div class="row bg-light">
+  <div class="col-6 h-100 bg-light">
+       <div class= "container3  d-flex justify-content-center align-items-center flex-column ">
+          <div class="box-left box-bottom">
+                <h2 class="facebook_title" > W3-Social</h2>
+                <h4 class="body"> W3V helps you connect and share with the people in your life.</h4>
+          </div>
+        </div>
+  </div>
+
+
+  <div class="col-6 h-100 bg-light">
+    <div class= "container3  d-flex justify-content-center align-items-center flex-column  ">
+        <div class="box-color move-right ">
+            <div class="col-md-12 h-100 mx-auto d-flex justify-content-center flex-column align-items-center sign-up">
+                <h1>Sign up</h1>
+                  <div class="border">
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%# <%= render "devise/shared/error_messages", resource: resource %> 
+      
+      <div class="field my-4"  >
+        <%= f.text_field :firstname, autofocus: true, placeholder: "Firstname" , class: "box-size", id: "first"%>
+      </div>
+      <div class="field my-4"  >
+        <%= f.file_field :image, autofocus: true, placeholder: "image" , class: "box-size"%>
+      </div>
+      <div class="field my-4"  >
+        <%= f.text_field :lastname, autofocus: true, placeholder: "Lastname" , class: "box-size", id: "second"%>
+      </div>
+      <div class="field my-4"  >
+        <%= f.text_field :username, autofocus: true, placeholder: "username" , class: "box-size" , id: "usernames"%>
+      </div>
+      <div class="field my-4">
+        <%= f.email_field :email, autofocus: true, placeholder: "email" , class: "box-size" , id: "emails"%>
+      </div>
+      <div class="field my-4">
+        <%= f.password_field :password, placeholder: "password" , class: "box-size", id: "passwords"%>
+      </div>
+      <div class="field my-4">
+        <%= f.password_field :password_confirmation, placeholder: "confirm-password" , class: "box-size", id: "remember-me-eye"%>
+        <span> <i class="fa fa-eye" onclick=checkpassword() ></i> </span>
+      </div>
+      <div class="actions move1">
+        <%= f.submit "Sign up" , class: "btn-color submit", onclick: "validateForm(event)" , onsubmit:"check_field()", id: "submit_form" %>
+      </div>
+    <% end %>
+      <%= render "devise/shared/links"%>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+
+  // $(document).ready(function(){
+  // $(".text_field").bind("keyup", check_field);
+  // });
+
+  function checkpassword() { 
+      var remember_type = $("#remember-me-eye").attr('type');
+      if( remember_type == "text"){
+        $("#remember-me-eye").attr('type','password');
+      }
+      else
+      { 
+        $("#remember-me-eye").attr('type','text');
+      }
+    }
+
+  function validateForm(e){
+    var fnameReg = /^[A-Za-z]+$/;
+    var lnameReg = /^[A-Za-z]+$/;
+    var nameReg = /^[A-Za-z]+$/;
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var passReg = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/;
+    var names = $('#usernames').val();
+    var email = $('#emails').val();
+    var password = $('#passwords').val();
+    var fname = $('#first').val();
+    var sname = $('#second').val();
+    $('.error').hide();
+
+    //  if(names!="" && email!="" && password!="")
+    // {
+    //   $("#submit_form").prop( "disabled", false);
+    //   return true;
+    // }
+    // else
+    // {
+    //   $("#submit_form").prop( "disabled", true);
+    //   return false;
+    // }
+
+
+    if(fname == ""){
+      $('#first').after('<span class="error text-danger"> Please enter firstname</span>');
+        e.preventDefault();
+        return false;
+    }
+    // else if(!fnamereg.test(fname)){
+    //   $('#first').after('<span class="error text-danger"> Please enter correct username</span>');
+    //     e.preventDefault();
+    //     return false;
+    // }
+
+    if(sname == ""){
+      $('#second').after('<span class="error text-danger"> Please enter lastname</span>');
+        e.preventDefault();
+        return false;
+    }
+    // else if(!lnamereg.test(sname)){
+    //   $('#second').after('<span class="error text-danger"> Please enter correct username</span>');
+    //     e.preventDefault();
+    //     return false;
+    // }
+
+
+    if(names == ""){
+      $('#usernames').after('<span class="error text-danger"> Please enter username</span>');
+        e.preventDefault();
+        return false;
+    }
+
+    else if(!nameReg.test(names)){
+      $('#usernames').after('<span class="error text-danger"> Please enter correct username</span>');
+        e.preventDefault();
+        return false;
+    }
+    if(email == ""){
+      $('#emails').after('<span class="error text-danger"> Please enter email</span>');
+        e.preventDefault();
+        return false;
+    }
+    else if(!emailReg.test(email)){
+      $('#emails').after('<span class="error text-danger"> Please enter correct email format</span>');
+        e.preventDefault();
+        return false;
+    }
+    if(password == ""){
+      $('#passwords').after('<span class="error text-danger"> Please enter password</span>');
+        e.preventDefault();
+        return false;
+    }
+    else if(!passReg.test(password)){
+      $('#passwords').after('<span class="error text-danger"> Password must contain 8 characters and at least 1 capital letter,\n\n1 small letter, 1 number and 1 special character</span>');
+      e.preventDefault();
+      return false;  
+    }
+  } 
+</script>

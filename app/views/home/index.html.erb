@@ -1,0 +1,269 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
+  <%# <a class="navbar-brand" href="#">Navbar</a> %>
+  <i class="fa fa-vk" aria-hidden="true"></i>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse " id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">W3V-Social <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0 padding1">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <span><%=image_tag current_user.image.variant(resize: "50x50") rescue nil%></span>
+    </form>
+  </div>
+</nav>
+<%#navbar ends%>
+
+    <div class="container-fluid">
+      <div class="row top1">
+        <div class="col-2">
+            <div class="container-fluid">
+              <div class="padding4 ">
+                <div class="">
+                    <span><%=image_tag current_user.image.variant(resize: "50x50") rescue nil%></span>
+                      <%=current_user.username%> 
+                </div>
+              </div>
+            </div>
+          <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidenav">
+            <ul class="nav nav-pills flex-column mb-auto padding3">
+                <li class="nav-item">
+                  <a href="#" class="nav-link link-dark" aria-current="page">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                      <span class="bi me-2" width="16" height="16"></span>
+                        Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link link-dark">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                      <span class="bi me-2" width="16" height="16"></span>
+                        People
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link link-dark">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="bi me-2" width="16" height="16"></span>
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-link link-dark">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    <span class="bi me-2" width="16" height="16"></span>
+                    Settings
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link link-dark">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                    <% if user_signed_in? %>
+                      <%=  link_to "Sign_out", destroy_user_session_path, method: :delete,data: {confirm: "are you sure you want to logout"}, class: "nav-link" %>
+                    <% else %>
+                      <%= link_to "Sign_in", new_user_session_path, class: "nav-link bg-primary"  %> 
+                    <% end %>
+                  </a>
+                </li>
+            </ul>
+          </div>
+      </div>
+
+    <div class="col-5">
+        <div class= "border3 p-3">
+            <%= form_with model: @post, class: "d-flex align-items-center" do |f| %>
+              <%= image_tag current_user.image.variant(resize: "50x50") rescue nil%>
+              <%= f.text_field :title, placeholder:"What's new #{current_user.username}", class:"removeborder px-3"%>
+              <span class='select-wrapper'>
+                <i class="fa fa-camera" aria-hidden="true"></i>
+                <%= f.file_field :images, id: 'image_src', label: "Photos" %>
+              </span>
+              <%= f.submit "Create Post" , class: "btn btn-primary"%>
+            <% end %>
+        </div>
+
+        <div class="post">
+          <% @posts.each do |post| %>
+            <div class="border5 padding5">
+              <div class="post titlebold">
+                <span><%=image_tag post.user.image.variant(resize: "50x50") rescue nil%></span>
+                <span class="post"><%= post.user.username %>
+              </div>  
+              <div class="post titlebold">
+                <span><%=post.title%></span>
+              </div>
+              <% unless post.images.count == 0 %>
+                <div class="post-loop">
+                  <%=image_tag post.images.first%>
+                </div>
+              <%end%>
+              <div class='post d-flex'>
+                <% unless post.is_liked?(current_user) %>
+                  <%= button_to post_like_path(post_id: post), method: "put" do %>
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                  <% end %>
+                <% else %>
+                  <%= button_to post_dislike_path(post_id: post), method: "put" do %>
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+                <div class=''>
+                  <span class="post">
+                    <%= post.likes.sum(:count) %>
+                  </span>
+                </div>
+              </div>
+              <hr>
+              <div class=" like border3 pb-3">
+                  <%= form_with model: @comment, class: "d-flex" do |f| %>
+                    <%= f.text_field :message, placeholder:"Write a comment", class:"removeborder"%>
+                    <%#= f.file_field :images, multiple: true, placeholder: "image"%>
+                    <%= f.hidden_field :post_id, value: post.id %>
+                    <%= f.submit "Comment" , class: "btn btn-primary"%>
+                  <% end %>
+              </div>
+            
+            </div>
+
+              <div class="post padding4">
+                <tbody>
+                  <% comment_order(post.comments).each do |comment| %>
+                    <tr class="tr-success post">
+                        <div class="colorcomment pad1">
+                          <% if comment.user.present?%>
+                            <div class="post titlebold"> 
+                              <span><%=image_tag comment.user.image.variant(resize: "50x50") rescue nil%></span>
+                              <span><%=comment.user.username %> 
+                            </div>
+                            <div class="">
+                              <span><%= comment.message%></span>
+                            </div>
+                          <%end%>
+                        </div> 
+                    </tr>
+                  <%end%> 
+                </tbody>
+                  <%##this is the end of Post model 148 line%>
+              </div>
+          <%end%>
+        </div> 
+
+    </div>
+          
+          
+          
+          
+          
+         
+
+    <div class="col-3">
+      <h6>REQUESTS</h6>
+        <div>
+            <% check_incoming_friend_request.each do |user|%>  
+              
+                <% unless check_friendship(user.requester_id, current_user.id)%>
+              <div class="request"> 
+                <div class="d-flex">
+                  <div class="pb-1"><%=image_tag user.requester.image.variant(resize: "40x30") rescue nil%></div>
+                  <div class="pb-3 px-3"><%=get_user(user.requester_id).firstname %> wants to add you to friends</div>
+                </div>
+                  <td><%= link_to "Accept", accept_friend_requests_path(:receive_id => user.requester_id), class: "btn btn-primary d-inline-block" %></td>
+                  <td><%= link_to "Decline", reject_friend_requests_path(:receive_id => current_user.id), method: :post, class: "btn btn-danger d-inline-block" %></td>
+              </div>
+                <%end%>
+            
+            <%end%>
+         </div>
+      
+      <div class="pad2 "> 
+          <table>
+            <th>FRIENDS</th>
+              <%friendships.each do |user|%>
+                <tr>
+                  <td><%= get_user(user.user_id).username %></td>
+                </tr>
+              <%end%>
+          </table>
+        </div>
+
+      <div class="pad2"> 
+        <table>
+          <th>ADD Friend</th>
+            <% all_user.each do |user|%>
+              <tr>
+                <td><%=image_tag user.image.variant(resize: "50x50") rescue nil%></td>
+                <td><%=user.firstname + user.lastname%></td>
+                  <%unless check_friend_request_sent(current_user.id , user.id)%>
+                    <td><%= button_to "add friend", friend_requests_path(:receive_id => user.id), class: "btn btn-primary" %></td> 
+                  <%else%>
+                    <td><%= button_to "friend request sent",{},:disabled => true, class: "btn btn-secondary" %></td>
+                  <%end%>
+              </tr>
+            <%end%>
+        </table>
+      </div>
+
+
+      
+    </div>
+  </div>
+    
+
+<div>
+  <footer class="bg-dark text-center text-white">
+  <!-- Grid container -->
+  <div class="container p-4 pb-0">
+    <!-- Section: Social media -->
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-facebook-f"></i
+      ></a>
+
+      <!-- Twitter -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-twitter"></i
+      ></a>
+
+      <!-- Google -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-google"></i
+      ></a>
+
+      <!-- Instagram -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-instagram"></i
+      ></a>
+
+      <!-- Linkedin -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-linkedin"></i
+      ></a>
+
+      <!-- Github -->
+      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        ><i class="fa fa-github"></i
+      ></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2020 Copyright:
+    <a class="text-white" href="https://mdbootstrap.com/">W3Villa.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+</div>
+
+
