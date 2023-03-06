@@ -1,0 +1,17 @@
+<span class="d-flex"><h5>REQUESTS</h5>
+        <h5 class="pl-2">(<%= check_incoming_friend_request.count%>)</h5>
+</span>
+    <div>
+        <% check_incoming_friend_request.each do |user|%>  
+            <div class="request"> 
+            <div class="d-flex">
+                <div class="pb-1"><%=image_tag user.requester.image.variant(resize: "30x30"),class:"image1" rescue image_tag 'default.jpg', class: "image1" %></div>
+                <div class="pb-3 px-3"><%=get_user(user.requester_id).firstname %> wants to add you to friends</div>
+            </div>
+            <div class="px-5">
+                <td><%= link_to "Accept", accept_friend_requests_path(:receive_id => user.requester_id),method: :post, class: "btn btn-primary d-inline-block" %></td>
+                <td><%= link_to "Decline", reject_friend_requests_path(:receive_id => user.requester_id), method: :post, class: "btn btn-danger d-inline-block" %></td>
+            </div>
+            </div>
+        <%end%>
+    </div>

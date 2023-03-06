@@ -1,0 +1,16 @@
+ <h5 class="pt-5">ADD Friend</h5>
+        <div class="request1 scroll1"> 
+              <% not_friend.each do |i|%>
+                <%user = get_user(i)%>
+                  <div class="d-flex justify-content-between request">
+                      <span><%=image_tag user.image ,class:"image1 mx-2" rescue image_tag 'default.jpg', class: "mx-2 image1" %>
+                      <%=user.firstname + user.lastname%></span>
+                  
+                        <%unless check_friend_request_sent(current_user.id , user.id)%>
+                          <span><%= button_to "add friend", friend_requests_path(:receive_id => user.id), class: "btn btn-primary" %></span> 
+                        <%else%>
+                          <span><%= button_to "Pending",{},:disabled => true, class: "btn btn-secondary" %></span>
+                        <%end%>
+                  </div>    
+              <%end%>
+        </div>

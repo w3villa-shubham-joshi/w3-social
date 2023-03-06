@@ -1,0 +1,81 @@
+        <div class= "border3 p-3">
+            <%= form_with model: @post, class: "d-flex align-items-center" do |f| %>
+              <%= image_tag current_user.image.variant(resize: "50x50"), class:"image1" rescue image_tag 'default.jpg', class:"image1"%>
+              <%= f.text_field :title, placeholder:"What's new #{current_user.username}", class:"removeborder px-3"%>
+              <span class='select-wrapper'>
+                <i class="fa fa-camera" aria-hidden="true"></i>
+                <%= f.file_field :images, id: 'image_src', label: "Photos" %>
+              </span>
+              <%= f.submit "Create Post" , class: "btn btn-primary"%>
+            <% end %>
+        </div>
+
+        <div class="post">
+          <% @posts.each do |post| %>
+            <div class="border5 padding5">
+              <div class="post d-flex">
+                <span><%=image_tag post.user.image.variant(resize: "50x50"),class:"image1"  rescue image_tag 'default.jpg', class:"image1"%></span>
+                <div class="px-3 ">
+                  <span class="titlebold"><%= post.user.username %></span>
+                  </br>
+                  <%="#{calculate_time(post.created_at)}"%>
+                </div>  
+              </div>  
+              <div class="post titlebold">
+                <span><%=post.title%></span>
+              </div>
+              <% unless post.images.count == 0 %>
+                <div class="post-loop">
+                  <%=image_tag post.images.first%>
+                </div>
+              <%end%>
+              <div class='post d-flex'>
+                <% unless post.is_liked?(current_user) %>
+                  <%= link_to post_like_path(post_id: post),method: "put"  do %>
+                    <i class="fa fa-thumbs-up likesize" aria-hidden="true"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to post_dislike_path(post_id: post), method: "put" do %>
+                    <i class="fa fa-thumbs-down likesize" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+                <div class='px-2'>
+                  <span class="post">
+                    <%= post.likes.sum(:count) %>
+                  </span>
+                </div>
+              </div>
+              <hr>
+              <div class=" like border3 pb-3">
+                  <%= form_with model: @comment, class: "d-flex" do |f| %>
+                    <%= f.text_field :message, placeholder:"Write a comment", class:"removeborder"%>
+                    <%#= f.file_field :images, multiple: true, placeholder: "image"%>
+                    <%= f.hidden_field :post_id, value: post.id %>
+                    <%= f.submit "Comment" , class: "btn btn-primary"%>
+                  <% end %>
+              </div>
+            
+            </div>
+
+              <div class="post padding4">
+                <tbody>
+                  <% comment_order(post.comments).each do |comment| %>
+                    <tr class="tr-success post">
+                        <div class="colorcomment pad1">
+                          <% if comment.user.present?%>
+                            <div class="post titlebold"> 
+                              <span><%=image_tag comment.user.image.variant(resize: "30x30"), class:"image1" rescue image_tag 'default.jpg', class:"image1"%></span>
+                              <span><%=comment.user.username %> 
+                            </div>
+                            <div class="">
+                              <span><%= comment.message%></span>
+                            </div>
+                          <%end%>
+                        </div> 
+                    </tr>
+                  <%end%> 
+                </tbody>
+                  <%##this is the end of Post model 148 line%>
+              </div>
+          <%end%>
+        </div> 

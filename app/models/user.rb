@@ -17,14 +17,23 @@ class User < ApplicationRecord
   
   has_many :friendships, ->(user) {where("user_id = ? OR friend_id = ?", user.id, friend.id)}
   has_many :friends, through: :friendships
-  # has_many :friend_as, through: :friendships_as_user
-  # has_many :friend_bs, through: :friendships_as_friend
-
-  # has_many :incoming_friend_requests, class_name: :FriendRequest, source: :friend
 
   
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
   validates :username, presence: true, uniqueness: { case_sensitive: false }
+
+  # validates_uniqueness_of :username
+  # scope :all_except, ->(user) { where.not(id: user) }
+  # after_create_commit { broadcast_append_to "users" } 
+
+  has_many :messagee, foreign_key: :receiver_id, class_name: 'Message'
+  has_many :senders, through: :messagee
+  has_many :messaged, foreign_key: :sender_id, class_name: 'Message'
+  has_many :receivers, through: :messaged
+  after_create_commit { broadcast_append_to "users" }
+  has_many :messages
+
+
   
   def friendships
     friendships_as_user + friendships_as_friend
@@ -36,10 +45,7 @@ class User < ApplicationRecord
     @login || username || email
   end
   
-  # def email_required?
-  #   false
-  # end
-  
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)

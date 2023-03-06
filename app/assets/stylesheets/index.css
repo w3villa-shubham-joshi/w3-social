@@ -216,6 +216,7 @@ div#error_explanation h2 {
 .sidenav{
     position: sticky;
     top: 150px;
+    border-radius: 13px;
 }
 .navfix{
     position: fixed;
@@ -227,8 +228,8 @@ div#error_explanation h2 {
 }
 .top1{
     padding-top: 30px;
-    justify-content: space-around;
-    background-color: whitesmoke;
+    justify-content: center;
+    /* background-color: whitesmoke;  */
 }
 .display{
     display: flex;
@@ -286,4 +287,92 @@ div#error_explanation h2 {
   .post-loop img {
     width: 100%;
     aspect-ratio: 1 / 1;
+  }
+  .image{
+    width: 45px;
+    border-radius: 20%;
+    height: 45px;
+    object-fit: cover;
+  }
+  .image1{
+    width: 45px;
+    border-radius: 20%;
+    height: 45px;
+    object-fit: cover;
+  }
+  .date{
+    font-weight: lighter;
+  }
+  .move_up{
+    padding-bottom: 10px;
+  }
+  .request1{
+    border-radius: 4%;
+    overflow: hidden;
+  }
+  .btn {
+    border-radius: 10px;
+  }
+  .boader{
+    border-bottom:1px solid #ccc;
+  }
+  .body1{
+    background-image: url(bg3.jpg);
+    background-position: center;
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+
+  }
+  .likesize{
+    font-size: 24px;
+  }
+  .scroll{
+    max-height: 245px;
+    overflow: auto;
+  }
+  .scroll1{
+    max-height: 182px;
+    overflow: auto;
+  }
+  #button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #376ed3;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color .3s, 
+      opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+  }
+  #button::after {
+    content: "\f077";
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1em;
+    color: #fff;
+  }
+  #button:hover {
+    cursor: pointer;
+    background-color: #333;
+  }
+  #button:active {
+    background-color: #555;
+  }
+  #button.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  .sticky{
+    position: sticky;
+    position: -webkit-sticky;
+    top: 90px;
   }

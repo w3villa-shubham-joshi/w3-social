@@ -17,7 +17,6 @@
                   <div class="border">
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%# <%= render "devise/shared/error_messages", resource: resource %> 
       
       <div class="field my-4"  >
         <%= f.text_field :firstname, autofocus: true, placeholder: "Firstname" , class: "box-size", id: "first"%>
@@ -60,9 +59,6 @@
 <script type="text/javascript">
 
 
-  // $(document).ready(function(){
-  // $(".text_field").bind("keyup", check_field);
-  // });
 
   function checkpassword() { 
       var remember_type = $("#remember-me-eye").attr('type');
@@ -88,16 +84,7 @@
     var sname = $('#second').val();
     $('.error').hide();
 
-    //  if(names!="" && email!="" && password!="")
-    // {
-    //   $("#submit_form").prop( "disabled", false);
-    //   return true;
-    // }
-    // else
-    // {
-    //   $("#submit_form").prop( "disabled", true);
-    //   return false;
-    // }
+  
 
 
     if(fname == ""){
@@ -105,22 +92,12 @@
         e.preventDefault();
         return false;
     }
-    // else if(!fnamereg.test(fname)){
-    //   $('#first').after('<span class="error text-danger"> Please enter correct username</span>');
-    //     e.preventDefault();
-    //     return false;
-    // }
 
     if(sname == ""){
       $('#second').after('<span class="error text-danger"> Please enter lastname</span>');
         e.preventDefault();
         return false;
     }
-    // else if(!lnamereg.test(sname)){
-    //   $('#second').after('<span class="error text-danger"> Please enter correct username</span>');
-    //     e.preventDefault();
-    //     return false;
-    // }
 
 
     if(names == ""){
