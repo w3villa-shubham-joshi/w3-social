@@ -1,4 +1,5 @@
 class LikesController < ApplicationController
+    skip_before_action :verify_authenticity_token
     # def create
     #     @like = Like.new(like_params)
     #     @likee = Like.create(like_params.merge(user_id: current_user.id))
@@ -14,7 +15,7 @@ class LikesController < ApplicationController
         like = post_get.likes.new(count: 1, user: current_user)
         if like.save
             #add success notice here
-            redirect_to root_path
+            # redirect_to root_path
         else
             # notify to failed like in ui
             redirect_to root_path

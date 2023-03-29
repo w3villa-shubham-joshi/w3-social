@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+    
     def new
         @post= Post.new
     end
@@ -6,6 +7,7 @@ class PostsController < ApplicationController
     def create       
         @post = Post.new(post_params.merge(user_id: current_user.id))
         if @post.save
+            flash.now[:notice] = "New Post Added Successfully"
             redirect_to root_path
         else
             flash[:error] = @post.errors.full_messages.join(', ')

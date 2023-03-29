@@ -1,12 +1,12 @@
 class FriendRequestsController < ApplicationController
     def create
         if sent_friend_request
-           message= { notice: 'Friend request sent.'}
+            flash[:notice] = "Friend Request sent."
         else
-            message=  {alert: 'Unable to send friend request.'}
+            flash[:notice] = "Unable to send request" 
         end
 
-        redirect_to root_path,  message
+        redirect_to root_path
 
 
     end
@@ -19,13 +19,15 @@ class FriendRequestsController < ApplicationController
         create_friendship(current_user.id, params[:receive_id])
         create_friendship(params[:receive_id], current_user.id)
         FriendRequest.where(requester_id: params[:receive_id], receiver_id: current_user.id).last.update(status: 1)
-        redirect_to root_path, notice: 'Friend request accepted.'
+        flash[:notice] = "Friend Request Accepted"
+        redirect_to root_path
     end
 
     def reject
         reject_friend_request = FriendRequest.find_by(receiver_id: current_user.id, requester_id: params[:receive_id])
         reject_friend_request.update(status: 2) if reject_friend_request.present?
-        redirect_to root_path, notice: 'Friend request rejected.'
+        flash[:notice] = "Friend Request Rejected"        
+        redirect_to root_path
     end
 
  
@@ -36,9 +38,9 @@ private
         # Friendship.create(user_id: receiver_id , friend_id: sender_id)
     end
 
-  def sent_friend_request
-    @friend_request = current_user.friend_requests_as_requester.create(receiver_id: params[:receive_id])    
-  end  
+    def sent_friend_request
+        @friend_request = current_user.friend_requests_as_requester.create(receiver_id: params[:receive_id])    
+    end  
 
 end
 
