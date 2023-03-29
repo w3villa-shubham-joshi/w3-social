@@ -19,6 +19,7 @@
                   <span class="titlebold"><%= post.user.username %></span>
                   </br>
                   <%="#{calculate_time(post.created_at)}"%>
+                  </#br>
                 </div>  
               </div>  
               <div class="post titlebold">
@@ -29,20 +30,18 @@
                   <%=image_tag post.images.first%>
                 </div>
               <%end%>
-              <div class='post d-flex'>
+              <div class='post d-flex' id="like<%=post.id%>">
                 <% unless post.is_liked?(current_user) %>
-                  <%= link_to post_like_path(post_id: post),method: "put"  do %>
-                    <i class="fa fa-thumbs-up likesize" aria-hidden="true"></i>
-                  <% end %>
+                  <%#= link_to post_like_path(post_id: post),method: "put"  do %>
+                    <i class="fa fa-thumbs-o-up likesize like-unlike" aria-hidden="true" id="<%= post.id %>" ></i>
+                  <%# end %>
                 <% else %>
-                  <%= link_to post_dislike_path(post_id: post), method: "put" do %>
-                    <i class="fa fa-thumbs-down likesize" aria-hidden="true"></i>
-                  <% end %>
+                  <%#= link_to post_dislike_path(post_id: post), method: "put" do %>
+                    <i class="fa fa-thumbs-up likesize like-unlike" aria-hidden="true" id="<%= post.id %>" ></i>
+                  <%# end %>
                 <% end %>
                 <div class='px-2'>
-                  <span class="post">
                     <%= post.likes.sum(:count) %>
-                  </span>
                 </div>
               </div>
               <hr>
@@ -66,6 +65,7 @@
                             <div class="post titlebold"> 
                               <span><%=image_tag comment.user.image.variant(resize: "30x30"), class:"image1" rescue image_tag 'default.jpg', class:"image1"%></span>
                               <span><%=comment.user.username %> 
+                              [<%= comment.created_at.strftime("%I:%M %p")%>]
                             </div>
                             <div class="">
                               <span><%= comment.message%></span>
@@ -79,3 +79,37 @@
               </div>
           <%end%>
         </div> 
+
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+
+$('.like-unlike').on('click', function(){
+    var id = this.id;
+    if ($(this).hasClass('fa-thumbs-o-up')) {
+  debugger
+      $.ajax({
+            type: 'PUT',
+            url: 'posts/'+ id +'/like'
+      });
+      $(this).removeClass('fa-thumbs-o-up').addClass('fa-thumbs-up');
+      var like = +this.nextElementSibling.innerText + 1;
+      this.nextElementSibling.innerText = like;
+    }
+    // else {
+    // debugger
+    //   $.ajax({
+    //     type: 'PUT',
+    //     url: 'posts/'+ id +'/like'
+    //   })
+    //   $(this).removeClass('fa-thumbs-up').addClass('fa-thumb-o-down');
+    //   var dislike = +this.nextElementSibling.innerText + 1;
+    //   this.nextElementSibling.innerText = like;
+
+    // }
+})
+
+$('.')
+
+</script>

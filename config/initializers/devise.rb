@@ -31,6 +31,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.omniauth :google_oauth2, "8707747105-ci1bkc1uenfjm6dk01naokutr4msdd8p.apps.googleusercontent.com",  "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", provider_state: true
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -273,7 +274,7 @@ Devise.setup do |config|
   # config.navigational_formats = ['*/*', :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  config.sign_out_via = [:delete]
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
@@ -286,7 +287,7 @@ Devise.setup do |config|
   #
   # config.warden do |manager|
   #   manager.intercept_401 = false
-  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
+  #   manager.default_strategies(scope: :user).unshift :some_external_strateghttps://www.youtube.com/watch?v=CnZnwV38cjoy
   # end
 
   # ==> Mountable engine configurations
@@ -315,4 +316,9 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  # config.omniauth :facebook, "710078077528912", "6de5a4759ee3132d5b3acfe334a13dbf"
+  # config.omniauth :facebook, Rails.application.credentials.facebook['710078077528912'], Rails.application.credentials.facebook['6de5a4759ee3132d5b3acfe334a13dbf'], token_params: { parse: :json }
+  # config.omniauth_path_prefix = "/users/auth"
+  # config.omniauth :google_oauth2, '8707747105-ci1bkc1uenfjm6dk01naokutr4msdd8p.apps.googleusercontent.com','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'
+
 end

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
       # @comments = Comment.all.order(created_at: :desc)
       # @like = Like.new
       # @likes = Like.all
-      render
+      # render
     end
 
 end

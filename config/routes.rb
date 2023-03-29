@@ -1,16 +1,13 @@
 Rails.application.routes.draw do
-  resources :messages
-  # get 'rooms/index'
+  # resources :messages
 
-  devise_for :users
- 
-
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }    
   root to: "home#index"
   resources :posts do
     put '/like', to: 'likes#like'
     put '/dislike', to: 'likes#dislike'
   end
-  
+
   resources :comments
 
   resources :friend_requests, only: [:create] do 
@@ -21,6 +18,11 @@ Rails.application.routes.draw do
   end 
 
   resources :rooms
-  resources :users
+  resources :users  
+  # root 'rooms#index'
+  resources :rooms do
+    resources :messages
+  end
+  
 
 end

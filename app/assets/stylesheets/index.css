@@ -321,7 +321,19 @@ div#error_explanation h2 {
     background-position: center;
     /* background-repeat: no-repeat; */
     background-size: cover;
-
+  }
+  .body2{
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    background-position: center;
+    background-size: cover;
+  }
+  .body3{
+    background-image: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%);
+    background-position: center;
+    background-size: cover;
+  }
+  .height{
+    height: 100vh;
   }
   .likesize{
     font-size: 24px;
@@ -375,4 +387,7 @@ div#error_explanation h2 {
     position: sticky;
     position: -webkit-sticky;
     top: 90px;
+  }
+  .cameraright{
+    padding-left: 20px;
   }

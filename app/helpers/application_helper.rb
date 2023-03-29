@@ -54,4 +54,21 @@ module ApplicationHelper
         all_user.pluck(:id) - friendships.pluck(:user_id)
     end 
 
+    def tab_options
+        [['Home', 'home'], ['People', 'users'], ['Profile', 'user'], ['Setting','cog']]
+    end
+    
+    def sidebarUrl(test)
+        case test
+        when 'Home'
+            'http://localhost:3000'
+        when 'People'
+            'http://localhost:3000'
+        when 'Profile'
+            "/users/#{current_user.id}/edit"
+        when 'Setting'
+            'http://localhost:3000'
+        end
+    end
 end
+
